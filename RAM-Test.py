@@ -26,15 +26,21 @@ file = open("/proc/meminfo", "r")
 lines = file.readlines()
 
 mem_info = {}
-for lines in file:
-    line_parts = lines.split(':')
+count = 1
+for line in lines:
+    line_parts = line.split()
     key = line_parts[0].strip()
     value = line_parts[1].strip()
-    mem_info[key] = int(value.split()[0])
+#   mem_info[key] = int(value.split()[0])
+    if count == 1:
+        total_mem = int(value)
+    if count == 2:
+        free_mem = int(value)
+    count += 1
 
-total_mem = lines['MemTotal', 0]
-free_mem = lines['MemFree', 0]
-used_mem = total_mem - free_mem
+#total_mem = lines[1]['MemTotal']
+#free_mem = lines['MemFree']
+used_mem = int(total_mem - free_mem)
 
 print(f"Used Memory:\n{used_mem / 1024: .2f} MB")
 print(f"Free Memory:\n{free_mem / 1024: .2f} MB") 
